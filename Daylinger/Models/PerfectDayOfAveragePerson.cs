@@ -1,6 +1,7 @@
 ﻿using Daylinger.Models;
 using System;
 using System.Collections.Generic;
+
 namespace Daylinger.Models
 {
     public class PerfectDayOfAveragePerson : DayTemplate
@@ -20,7 +21,18 @@ namespace Daylinger.Models
                 {
                     Id = Guid.NewGuid(),
                     Description = "Breakfast",
-                    EventType = new Food(),
+                },
+
+                new BaseEvent
+                {
+                    Id = Guid.NewGuid(),
+                    Description = "Lunch",
+                },
+
+                new BaseEvent
+                {
+                    Id = Guid.NewGuid(),
+                    Description = "Dinner",
                 },
             };
         }
