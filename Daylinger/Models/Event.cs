@@ -8,7 +8,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Daylinger.Models
 {
-    
     public class Event
     {
         [Key]
@@ -16,8 +15,10 @@ namespace Daylinger.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public int DurationInMinutes { get; set; }
-        public EventType EventType { get; set; }
         public DateTime Start { get; set; }
         public DateTime Finish { get; set; }
+
+        public int EventTypeId { get; set; }
+        public EventType EventType { get; set; }
     }
 }

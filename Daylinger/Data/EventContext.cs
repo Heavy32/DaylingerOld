@@ -11,10 +11,20 @@ namespace Daylinger.Data
     {
         public DbSet<Event> Events { get; set; }
         public DbSet<BaseEvent> BaseEvents { get; set; }
+        public DbSet<EventType> EventTypes { get; set; }
 
         public EventContext(DbContextOptions<EventContext> options)
             : base(options)
         {
+
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Event>()
+                .HasOne(e => e.EventType)
+                .WithMany(t => t.Events)
+                .HasForeignKey(e => e.EventTypeId);
         }
     }
 }

@@ -33,9 +33,10 @@ namespace Daylinger.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly TestDbContext context;
+        //private readonly TestDbContext context;
+        private readonly EventContext context;
 
-        public HomeController(ILogger<HomeController> logger, TestDbContext context)
+        public HomeController(ILogger<HomeController> logger, EventContext context)
         {
             this.context = context;
             _logger = logger;
@@ -43,11 +44,17 @@ namespace Daylinger.Controllers
 
         public IActionResult Index()
         {
+            context.EventTypes.Add(new EventType
+            {
+                Id = 1,
+                Name = "Work"
+            });
+            context.SaveChanges();
+
             TempData["i"] = 0;
 
             context.SaveChanges();
-            return View();
-
+            return View();  
         }
 
         public IActionResult Test()

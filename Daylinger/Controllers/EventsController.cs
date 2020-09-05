@@ -21,7 +21,7 @@ namespace Daylinger.Controllers
         }
 
         public IActionResult Index()
-        {           
+        {
             if (context.BaseEvents.Count() == 0)
             {
                 var template = new PerfectDayOfAveragePerson();
@@ -54,7 +54,7 @@ namespace Daylinger.Controllers
         {
             var a = context.Events.ToList(); //WHY THE FUCK DOESN'T THIS ACTION WORK WITHOUT IT??? 
 
-            int i = Convert.ToInt32(TempData["i"]);
+            int i = Convert.ToInt32(TempData["i"]); //rewrite
             var eventToUpdate = context.Events.Local.ElementAt(i);
             i++;
             TempData["i"] = i;
@@ -76,14 +76,6 @@ namespace Daylinger.Controllers
             var e = context.BaseEvents.Find(Id);
             e.Name = inputEvent.Name;
             context.SaveChanges();
-
-            //var local = context.Set<BaseEvent>().Local.FirstOrDefault(entry => entry.Id.Equals(Id));
-            //if (local != null)
-            //{
-            //    context.Entry(local).State = EntityState.Detached;
-            //}
-            //context.Entry(inputEvent).State = EntityState.Modified;
-            //context.SaveChanges();
 
             int i = Convert.ToInt32(TempData["i"]);
 
@@ -122,30 +114,16 @@ namespace Daylinger.Controllers
 
         public IActionResult Create()
         {
+            ViewData["EventTypeId"] = new SelectList(context.EventTypes, "Id", "Name");
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(EventInput eventInput)
+        public IActionResult Create(Event @event)
         {
-            var eventType = new EventType();
-                
-            if(eventInput.EventType == "Work")
-            {
-                eventType = new Work();
-            }
-
-            Event @event = new Event
-            {
-                Description = eventInput.Description,
-                Id = Guid.NewGuid(),
-                EventType = eventType,
-                Name = eventInput.Name,
-                DurationInMinutes = eventInput.DurationInMinutes
-            };
-
             context.Events.Add(@event);
             context.SaveChanges();
+            ViewData["EventTypeId"] = new SelectList(context.EventTypes, "Id", "Id", @event.EventTypeId);
             return RedirectToAction("SetUsersEvents");
         }
     }
