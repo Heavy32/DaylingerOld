@@ -8,6 +8,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Daylinger.Models
 {
+    public class Person
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+        public ICollection<Event> Events { get; set; }
+    }
+
     public class Event
     {
         [Key]
@@ -17,6 +25,9 @@ namespace Daylinger.Models
         public int DurationInMinutes { get; set; }
         public DateTime Start { get; set; }
         public DateTime Finish { get; set; }
+
+        public int PersonId { get; set; }
+        public Person Person { get; set; }
 
         public int EventTypeId { get; set; }
         public EventType EventType { get; set; }

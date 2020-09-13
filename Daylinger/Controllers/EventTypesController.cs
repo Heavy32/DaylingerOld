@@ -10,86 +10,85 @@ using Daylinger.Models;
 
 namespace Daylinger.Controllers
 {
-    public class Events1Controller : Controller
+    public class EventTypesController : Controller
     {
         private readonly EventContext _context;
 
-        public Events1Controller(EventContext context)
+        public EventTypesController(EventContext context)
         {
             _context = context;
         }
 
-        // GET: Events1
+        // GET: EventTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Events.ToListAsync());
+            return View(await _context.EventTypes.ToListAsync());
         }
 
-        // GET: Events1/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        // GET: EventTypes/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var @event = await _context.Events
+            var eventType = await _context.EventTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (@event == null)
+            if (eventType == null)
             {
                 return NotFound();
             }
 
-            return View(@event);
+            return View(eventType);
         }
 
-        // GET: Events1/Create
+        // GET: EventTypes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Events1/Create
+        // POST: EventTypes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,DurationInMinutes,Start,Finish")] Event @event)
+        public async Task<IActionResult> Create([Bind("Id,Name,EventRating")] EventType eventType)
         {
             if (ModelState.IsValid)
             {
-                @event.Id = Guid.NewGuid();
-                _context.Add(@event);
+                _context.Add(eventType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(@event);
+            return View(eventType);
         }
 
-        // GET: Events1/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        // GET: EventTypes/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var @event = await _context.Events.FindAsync(id);
-            if (@event == null)
+            var eventType = await _context.EventTypes.FindAsync(id);
+            if (eventType == null)
             {
                 return NotFound();
             }
-            return View(@event);
+            return View(eventType);
         }
 
-        // POST: Events1/Edit/5
+        // POST: EventTypes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Description,DurationInMinutes,Start,Finish")] Event @event)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,EventRating")] EventType eventType)
         {
-            if (id != @event.Id)
+            if (id != eventType.Id)
             {
                 return NotFound();
             }
@@ -98,12 +97,12 @@ namespace Daylinger.Controllers
             {
                 try
                 {
-                    _context.Update(@event);
+                    _context.Update(eventType);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EventExists(@event.Id))
+                    if (!EventTypeExists(eventType.Id))
                     {
                         return NotFound();
                     }
@@ -114,41 +113,41 @@ namespace Daylinger.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(@event);
+            return View(eventType);
         }
 
-        // GET: Events1/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        // GET: EventTypes/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var @event = await _context.Events
+            var eventType = await _context.EventTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (@event == null)
+            if (eventType == null)
             {
                 return NotFound();
             }
 
-            return View(@event);
+            return View(eventType);
         }
 
-        // POST: Events1/Delete/5
+        // POST: EventTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @event = await _context.Events.FindAsync(id);
-            _context.Events.Remove(@event);
+            var eventType = await _context.EventTypes.FindAsync(id);
+            _context.EventTypes.Remove(eventType);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EventExists(Guid id)
+        private bool EventTypeExists(int id)
         {
-            return _context.Events.Any(e => e.Id == id);
+            return _context.EventTypes.Any(e => e.Id == id);
         }
     }
 }

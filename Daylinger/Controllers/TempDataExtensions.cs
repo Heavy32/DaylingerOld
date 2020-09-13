@@ -7,7 +7,10 @@ namespace Daylinger.Controllers
     {
         public static void Put<T>(this ITempDataDictionary tempData, string key, T value)
         {
-            tempData[key] = JsonConvert.SerializeObject(value);
+            tempData[key] = JsonConvert.SerializeObject(value, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            });
         }
 
         public static T Get<T>(this ITempDataDictionary tempData, string key)
