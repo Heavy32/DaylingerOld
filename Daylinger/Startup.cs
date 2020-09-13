@@ -29,11 +29,10 @@ namespace Daylinger
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<EventContext>(options =>
-                options.UseInMemoryDatabase("Events"));
+            var connectionString = Configuration.GetConnectionString("EventContext");
 
-            services.AddDbContext<TestDbContext>(options =>
-                options.UseInMemoryDatabase("Test"));
+            services.AddDbContext<EventContext>(options =>
+                options.UseSqlServer(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
